@@ -52,14 +52,56 @@ Critical fixes and improvements for Zaincura Medical Center website to ensure co
 
 ## Deployment
 
+### Continuous Deployment Setup
+
+This repository is configured for **automatic deployment** from GitHub to Netlify. Every push to the `master` branch triggers an automatic build and deployment.
+
+#### GitHub → Netlify Integration
+1. **Connect Repository**: Link this GitHub repository to your Netlify account
+2. **Auto-Deploy**: Every push to `master` branch automatically triggers deployment
+3. **Deploy Previews**: Pull requests generate preview deployments for testing
+4. **Branch Deploys**: Feature branches can be configured for automatic deployment
+
+#### Netlify Connection Instructions
+1. Log into your [Netlify Dashboard](https://app.netlify.com/)
+2. Click "New site from Git" → "GitHub"
+3. Select `danishpaeds/zaincura-medical-center-fixes` repository
+4. Configure build settings:
+   - **Build command**: `bun install && bun run build`
+   - **Publish directory**: `out`
+   - **Production branch**: `master`
+5. Click "Deploy site"
+
+#### Automatic Deployment Features
+- ✅ **Master Branch**: Auto-deploy to production on every push
+- ✅ **Pull Request Previews**: Generate preview URLs for code review
+- ✅ **Branch Deploys**: Optional deployment for feature branches
+- ✅ **Build Notifications**: Get notified of deployment status
+- ✅ **Rollback Support**: Instantly rollback to previous deployments
+
 ### Netlify Configuration
 ```toml
 [build]
-  command = "bun run build"
+  command = "bun install && bun run build"
   publish = "out"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Production context
+[context.production]
+  command = "bun install && bun run build"
+
+# Deploy preview context (for pull requests)
+[context.deploy-preview]
+  command = "bun install && bun run build"
+
+# Branch deploy context
+[context.branch-deploy]
+  command = "bun install && bun run build"
 ```
 
-### Build Commands
+### Manual Build Commands
 ```bash
 # Install dependencies
 bun install
@@ -67,12 +109,18 @@ bun install
 # Development server
 bun run dev
 
-# Build for production
+# Build for production (used by Netlify)
 bun run build
 
-# Start production server
+# Start production server (local testing)
 bun run start
 ```
+
+### Deployment Status
+- **Repository**: Ready for Netlify connection
+- **Build Config**: Optimized for static export
+- **Continuous Deployment**: Configured and ready
+- **Deploy Previews**: Enabled for pull requests
 
 ## Implementation Notes
 
